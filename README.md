@@ -14,8 +14,12 @@ This repository is used by [`bbb.artnet`](https://github.com/2bbb/bbb.artnet), b
   - no external dependency beyond the C++ standard library and platform byte-order/socket headers
 - `bbb/sacn/sacn_packet.h`
   - compatibility include for older `bbb.artnet` code
+- `bbb/sacn/transport.hpp`
+  - minimal blocking UDP sender/receiver helpers
+  - multicast membership helpers
+  - local bind-interface and multicast-interface configuration
 - `bbb/sacn/net_compat.hpp`
-  - small cross-platform IPv4 adapter helper for future UDP transport layers
+  - small cross-platform IPv4 adapter helper used by the transport layer
 
 ## Requirements
 
@@ -62,6 +66,8 @@ add_subdirectory(path/to/bbb-sacn)
 target_link_libraries(your_target PRIVATE bbb::sacn)
 ```
 
+`bbb::sacn` links the required Windows socket libraries when used through CMake.
+
 ## Build and test
 
 ```sh
@@ -106,7 +112,7 @@ Current limitations:
 
 - The protocol layer is header-only and low-level; it does not own live UDP sockets.
 - UDP send/receive policy, threading, and Max/MSP object behavior remain in consumers such as `bbb.artnet`.
-- Network behavior is not integration-tested here; CI verifies packet encoding/parsing only.
+- Network behavior is intentionally minimal; CI compile-tests the UDP transport and opens local sockets, but does not require external network fixtures.
 
 ## License
 

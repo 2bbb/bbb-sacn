@@ -32,6 +32,7 @@
     #include <net/if.h>
     #include <sys/socket.h>
     #include <netinet/in.h>
+    #include <unistd.h>
 
     namespace bbb { namespace sacn { namespace net {
         inline void ensure_init() {}

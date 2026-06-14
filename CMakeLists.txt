@@ -10,6 +10,10 @@ target_include_directories(bbb_sacn INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
+if(WIN32)
+    target_link_libraries(bbb_sacn INTERFACE ws2_32 iphlpapi)
+endif()
+
 option(BBB_SACN_BUILD_TESTS "Build bbb-sacn tests" OFF)
 
 if(BBB_SACN_BUILD_TESTS)
@@ -18,9 +22,11 @@ if(BBB_SACN_BUILD_TESTS)
     add_executable(bbb_sacn_protocol_tests
         tests/protocol_tests.cpp
     )
+    add_executable(bbb_sacn_transport_tests
+        tests/transport_tests.cpp
+    )
     target_link_libraries(bbb_sacn_protocol_tests PRIVATE bbb::sacn)
-    if(WIN32)
-        target_link_libraries(bbb_sacn_protocol_tests PRIVATE ws2_32 iphlpapi)
-    endif()
+    target_link_libraries(bbb_sacn_transport_tests PRIVATE bbb::sacn)
     add_test(NAME bbb_sacn_protocol_tests COMMAND bbb_sacn_protocol_tests)
+    add_test(NAME bbb_sacn_transport_tests COMMAND bbb_sacn_transport_tests)
 endif()
